@@ -9,7 +9,7 @@ from transformers import LlamaForCausalLM, LlamaTokenizer  # noqa: E402
 BASE_MODEL = os.environ.get("BASE_MODEL", None)
 assert (
     BASE_MODEL
-), "Please specify a value for BASE_MODEL environment variable, e.g. `export BASE_MODEL=decapoda-research/llama-7b-hf`"  # noqa: E501
+), "Please specify a value for BASE_MODEL environment variable, e.g. `export BASE_MODEL=decapoda-research/llama-13b-hf`"  # noqa: E501
 
 tokenizer = LlamaTokenizer.from_pretrained(BASE_MODEL)
 
@@ -22,7 +22,7 @@ base_model = LlamaForCausalLM.from_pretrained(
 
 lora_model = PeftModel.from_pretrained(
     base_model,
-    "tloen/alpaca-lora-7b",
+    "alpaca-lora-13b",
     device_map={"": "cpu"},
     torch_dtype=torch.float16,
 )
@@ -37,10 +37,10 @@ lora_model.train(False)
 lora_model_sd = lora_model.state_dict()
 
 params = {
-    "dim": 4096,
+    "dim": 5120,
     "multiple_of": 256,
-    "n_heads": 32,
-    "n_layers": 32,
+    "n_heads": 40,
+    "n_layers": 40,
     "norm_eps": 1e-06,
     "vocab_size": -1,
 }
