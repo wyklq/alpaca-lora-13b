@@ -30,7 +30,7 @@ Without hyperparameter tuning, the LoRA model produces outputs comparable to the
     # export_hf_checkpoint.py
     # export_state_dict_checkpoint.py
 
-    export BASE_MODEL=decapoda-research/llama-7b-hf
+    export BASE_MODEL=decapoda-research/llama-13b-hf
     ```
 
     Both `finetune.py` and `generate.py` use `--base_model` flag as shown further below.
@@ -47,7 +47,7 @@ Example usage:
 
 ```bash
 python finetune.py \
-    --base_model 'decapoda-research/llama-7b-hf' \
+    --base_model 'decapoda-research/llama-13b-hf' \
     --data_path 'yahma/alpaca-cleaned' \
     --output_dir './lora-alpaca'
 ```
@@ -56,7 +56,7 @@ We can also tweak our hyperparameters:
 
 ```bash
 python finetune.py \
-    --base_model 'decapoda-research/llama-7b-hf' \
+    --base_model 'decapoda-research/llama-13b-hf' \
     --data_path 'yahma/alpaca-cleaned' \
     --output_dir './lora-alpaca' \
     --batch_size 128 \
@@ -75,21 +75,22 @@ python finetune.py \
 
 ### Inference (`generate.py`)
 
-This file reads the foundation model from the Hugging Face model hub and the LoRA weights from `tloen/alpaca-lora-7b`, and runs a Gradio interface for inference on a specified input. Users should treat this as example code for the use of the model, and modify it as needed.
+This file reads the foundation model from the Hugging Face model hub and the LoRA weights from `tloen/alpaca-lora-13b` (NOT tested, was using alpaca.cpp instead), and runs a Gradio interface for inference on a specified input. Users should treat this as example code for the use of the model, and modify it as needed.
 
 Example usage:
 
 ```bash
 python generate.py \
     --load_8bit \
-    --base_model 'decapoda-research/llama-7b-hf' \
-    --lora_weights 'tloen/alpaca-lora-7b'
+    --base_model 'decapoda-research/llama-13b-hf' \
+    --lora_weights 'alpaca-lora-13b'
 ```
 
 ### Checkpoint export (`export_*_checkpoint.py`)
 
 These files contain scripts that merge the LoRA weights back into the base model
 for export to Hugging Face format and to PyTorch `state_dicts`.
+NOTE: the upstream alpaca-lora's export_state_dict_checkpoint.py only support 7b model, this project version only supports 13B model.
 They should help users
 who want to run inference in projects like [llama.cpp](https://github.com/ggerganov/llama.cpp)
 or [alpaca.cpp](https://github.com/antimatter15/alpaca.cpp).
